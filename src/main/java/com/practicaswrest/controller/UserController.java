@@ -86,7 +86,7 @@ private UserReposity usuariorepositorio;
         BeanUtils.copyProperties(result,userDto);
         return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
-    
+
     @DeleteMapping("/users/{id}")
     public ResponseEntity<?> Eliminar(@PathVariable Long id){
 
