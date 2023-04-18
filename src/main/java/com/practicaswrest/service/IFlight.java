@@ -24,7 +24,6 @@ public interface IFlight {
 
      Boolean existeVueloxid(int id);
 
-     Optional<Flight> vueloxid(int id);
 
 
 

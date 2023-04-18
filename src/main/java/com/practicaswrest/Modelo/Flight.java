@@ -61,26 +61,9 @@ public class Flight {
     @OneToMany(mappedBy = "flight")
     private Set<Booking> bookingSet;
 
-    public Flight() {
-    }
 
-    public Flight(String departureDate, String departureAirportCode, String departureAirportName, String departureCity, String departureLocale, String arrivalDate, String arrivalAirportCode, String arrivalAirportName, String arrivalCity, String arrivalLocale, int ticketPrice, String ticketCurrency, int flightNumber, int seatCapacity, Set<Booking> bookingSet) {
-        this.departureDate = departureDate;
-        this.departureAirportCode = departureAirportCode;
-        this.departureAirportName = departureAirportName;
-        this.departureCity = departureCity;
-        this.departureLocale = departureLocale;
-        this.arrivalDate = arrivalDate;
-        this.arrivalAirportCode = arrivalAirportCode;
-        this.arrivalAirportName = arrivalAirportName;
-        this.arrivalCity = arrivalCity;
-        this.arrivalLocale = arrivalLocale;
-        this.ticketPrice = ticketPrice;
-        this.ticketCurrency = ticketCurrency;
-        this.flightNumber = flightNumber;
-        this.seatCapacity = seatCapacity;
-        this.bookingSet = bookingSet;
-    }
+
+
 
     public int getId() {
         return idf;

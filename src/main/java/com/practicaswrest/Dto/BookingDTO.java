@@ -22,25 +22,7 @@ public class BookingDTO {
 
     private String bookingReference;
 
-    private Flight flight;
 
-    private Usuario user;
-
-    public Flight getFlight() {
-        return flight;
-    }
-
-    public void setFlight(Flight flight) {
-        this.flight = flight;
-    }
-
-    public Usuario getUser() {
-        return user;
-    }
-
-    public void setUser(Usuario user) {
-        this.user = user;
-    }
 
     public int getId() {
         return id;

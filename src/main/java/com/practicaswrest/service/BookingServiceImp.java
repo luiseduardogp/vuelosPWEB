@@ -1,5 +1,7 @@
 package com.practicaswrest.service;
 
+import com.practicaswrest.Dto.BookingDTO;
+import com.practicaswrest.Dto.BookingMapperDto;
 import com.practicaswrest.Modelo.Booking;
 import com.practicaswrest.Enumeraciones.BookingStatus;
 import com.practicaswrest.Modelo.Flight;
@@ -7,6 +9,7 @@ import com.practicaswrest.Modelo.Usuario;
 import com.practicaswrest.repo.BookingReposity;
 import com.practicaswrest.repo.FlightReposity;
 import com.practicaswrest.repo.UserReposity;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +29,7 @@ public class BookingServiceImp implements IBooking{
 
     @Autowired
     private FlightReposity fr;
+
 
 
     @Override
@@ -49,18 +53,32 @@ public class BookingServiceImp implements IBooking{
     }
 
     @Override
-    public List<Booking> findbycustomer(int id) {
+    public List<Booking> findbycustomername(String name) {
         List<Booking> reservas = br.findAll();
         List<Booking> reservaxCliente = new ArrayList<>();
+        Long id = findiduserxname(name);
 
         for (Booking reserva : reservas) {
-            if (id == reserva.getUsuarios().getId()) {
-                reservaxCliente.add(reserva);
-            }
+             if (reserva.getUsuarios().getId() == id){
+                 reservaxCliente.add(reserva);
+             }
         }
 
         return reservaxCliente;
     }
+
+    @Override
+    public Long findiduserxname(String name) {
+        List<Booking> reservas = br.findAll();
+        for(Booking reserva : reservas){
+            if(reserva.getUsuarios().getNombre().equals(name)){
+                return reserva.getUsuarios().getId();
+            }
+        }
+
+        return null;
+    }
+
 
     @Override
     public List<Booking> Listarvuelos() {
@@ -68,15 +86,18 @@ public class BookingServiceImp implements IBooking{
     }
 
     @Override
-    public List<Booking> listarxStatusYcustomer(BookingStatus status, int id) {
+    public List<Booking> listarxStatusYcustomer(BookingStatus status, String name) {
         List<Booking> Listastatus = findbystatus(status);
         List<Booking> result = new ArrayList<>();
+        Long id = findiduserxname(name);
 
         for (Booking listastatus : Listastatus) {
             if (listastatus.getUsuarios().getId() == id) {
                 result.add(listastatus);
             }
         }
+
+
         return result;
     }
 
@@ -129,6 +150,8 @@ public class BookingServiceImp implements IBooking{
     public List<Booking> findbyfligth(int id_vuelo) {
         List<Booking> reservas = br.findAll();
         List<Booking> reservasXvuelo = new ArrayList<>();
+        List<BookingDTO> bookingDTOList = new ArrayList<>();
+        BookingDTO dto = new BookingDTO();
 
         for (Booking reserva : reservas) {
             if (id_vuelo == reserva.getFlight().getId()) {
@@ -136,7 +159,13 @@ public class BookingServiceImp implements IBooking{
             }
         }
 
-        return reservasXvuelo;
+        for (Booking reserva: reservasXvuelo){
+            bookingDTOList.add(dto);
+        }
+
+
+
+      return reservasXvuelo;
 
     }
 }

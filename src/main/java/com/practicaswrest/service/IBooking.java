@@ -1,5 +1,6 @@
 package com.practicaswrest.service;
 
+import com.practicaswrest.Dto.BookingDTO;
 import com.practicaswrest.Modelo.Booking;
 import com.practicaswrest.Enumeraciones.BookingStatus;
 
@@ -12,11 +13,13 @@ public interface IBooking {
 
     List<Booking> findbystatus(BookingStatus status);
 
-    List<Booking> findbycustomer(int id);
+    List<Booking> findbycustomername(String name);
+
+    Long findiduserxname(String name);
 
     List<Booking> Listarvuelos();
 
-    List<Booking> listarxStatusYcustomer(BookingStatus status, int id);
+    List<Booking> listarxStatusYcustomer(BookingStatus status, String name);
 
     Booking crear(Booking booking, Long userid, int id_vuelo);
 

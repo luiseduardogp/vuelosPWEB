@@ -38,7 +38,6 @@ public class FlightDto {
 
     private int seatCapacity;
 
-    private Set<Booking> bookingSet;
 
     public int getId() {
         return id;
@@ -162,11 +161,4 @@ public class FlightDto {
         this.seatCapacity = seatCapacity;
     }
 
-    public Set<Booking> getBookingSet() {
-        return bookingSet;
-    }
-
-    public void setBookingSet(Set<Booking> bookingSet) {
-        this.bookingSet = bookingSet;
-    }
 }

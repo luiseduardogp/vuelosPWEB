@@ -61,7 +61,7 @@ public class FlightServiceImp implements IFlight{
         List<Flight> vuelosxfecha = new ArrayList<>();
 
         for(Flight flight: vuelos){
-            if(flight.getArrivalAirportCode().equals(airportCode) && flight.getDepartureDate().equals(fecha)){
+            if(flight.getDepartureAirportCode().equals(airportCode) && flight.getDepartureDate().equals(fecha)){
                 vuelosxfecha.add(flight);
             }
         }
@@ -75,10 +75,6 @@ public class FlightServiceImp implements IFlight{
         return flightReposity.existsById(id);
     }
 
-    @Override
-    public Optional<Flight> vueloxid(int id) {
 
-        Optional<Flight> opt = flightReposity.findById(id);
-        return opt;
-    }
+
 }
