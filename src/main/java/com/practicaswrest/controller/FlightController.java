@@ -2,6 +2,7 @@ package com.practicaswrest.controller;
 
 import com.practicaswrest.Dto.FlightDto;
 import com.practicaswrest.Modelo.Flight;
+import com.practicaswrest.Modelo.Usuario;
 import com.practicaswrest.service.IFlight;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
+@CrossOrigin("*")
 public class FlightController {
 
 
@@ -55,12 +59,17 @@ public class FlightController {
         return new ResponseEntity<>(iFlight.listarXairportCode(airportCode,fecha),HttpStatus.OK);
     }
 
+    @GetMapping("/vuelos/")
+    public List<Flight> listartodoslosusuarios(){
+        return iFlight.listarVuelos();
+    }
+
 
 
 
     @GetMapping("/catalog/")
-    public ResponseEntity<?> ListarxParam(@RequestParam String departureAirportCode, @RequestParam String arrivalAirportCode, @RequestParam String departureDate){
-        return new ResponseEntity<>(iFlight.listarporparams(departureAirportCode,arrivalAirportCode,departureDate),HttpStatus.OK);
+    public ResponseEntity<?> ListarxParam(@RequestParam String departureAirportName, @RequestParam String arrivalAirportName, @RequestParam String departureDate){
+        return new ResponseEntity<>(iFlight.listarporparams(departureAirportName,arrivalAirportName,departureDate),HttpStatus.OK);
     }
 
 

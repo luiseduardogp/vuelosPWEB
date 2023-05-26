@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
+@CrossOrigin("*")
 public class BookingController {
 
 
@@ -64,11 +66,11 @@ public class BookingController {
     }
 
     @PostMapping("/booking/flight/{idflight}/user/{userid}")
-    public ResponseEntity<?> Crear(@RequestBody Booking booking,@PathVariable int idflight,  @PathVariable Long userid){
+    public ResponseEntity<?> Crear(@RequestBody Booking booking,@PathVariable int idflight,  @PathVariable int userid){
 
-
+        Long userId = Long.valueOf(userid);
         BookingDTO bookingDTO = new BookingDTO();
-        Booking result = iBooking.crear(booking,userid,idflight);
+        Booking result = iBooking.crear(booking,userId,idflight);
         BeanUtils.copyProperties(result,bookingDTO);
         return new ResponseEntity<>(bookingDTO, HttpStatus.OK);
     }
@@ -87,40 +89,32 @@ public class BookingController {
     }
 
     @GetMapping("/booking/")
-    public ResponseEntity<?> ListarReservas(@RequestParam (required = false) BookingStatus bookingStatus, @RequestParam (required = false) String nombreUser ){
-        List<BookingDTO> result = new ArrayList<>();
-        BookingDTO bookingDTO = new BookingDTO();
+    public ResponseEntity<?> ListarReservas(
+            @RequestParam(required = false) BookingStatus bookingStatus,
+            @RequestParam(required = false) String nombreUser
+    ) {
+        List<BookingDTO> result;
 
-        if(bookingStatus == null && nombreUser == null){
-            for(int i = 0; i< bookingReposity.findAll().size(); i++ ){
-                bookingDTO = bookingMapperDto.toDto(bookingReposity.findAll().get(i));
-                result.add(bookingDTO);
-            }
-
-        }else if (bookingStatus == null && nombreUser != null) {
-            for (int i = 0; i < iBooking.findbycustomername(nombreUser).size(); i++) {
-                bookingDTO = bookingMapperDto.toDto(iBooking.findbycustomername(nombreUser).get(i));
-                result.add(bookingDTO);
-            }
-        }
-
-        else if (bookingStatus != null && nombreUser == null){
-           for (int i = 0; i < iBooking.findbystatus(bookingStatus).size(); i++){
-               bookingDTO = bookingMapperDto.toDto(iBooking.findbystatus(bookingStatus).get(i));
-               result.add(bookingDTO);
-           }
+        if (bookingStatus == null && nombreUser == null) {
+            result = bookingReposity.findAll().stream()
+                    .map(bookingMapperDto::toDto)
+                    .collect(Collectors.toList());
+        } else if (bookingStatus == null && nombreUser != null) {
+            List<Booking> bookingsByCustomer = iBooking.findbycustomername(nombreUser);
+            result = bookingsByCustomer.stream()
+                    .map(bookingMapperDto::toDto)
+                    .collect(Collectors.toList());
+        } else if (bookingStatus != null && nombreUser == null) {
+            result = iBooking.findbystatus(bookingStatus).stream()
+                    .map(bookingMapperDto::toDto)
+                    .collect(Collectors.toList());
         } else {
-            for (int i = 0; i < iBooking.listarxStatusYcustomer(bookingStatus,
-                    nombreUser).size(); i++) {
-                bookingDTO = bookingMapperDto.toDto(iBooking.listarxStatusYcustomer(bookingStatus, nombreUser).get(i));
-                result.add(bookingDTO);
-            }
-
+            result = iBooking.listarxStatusYcustomer(bookingStatus, nombreUser).stream()
+                    .map(bookingMapperDto::toDto)
+                    .collect(Collectors.toList());
         }
 
-
-
-        return new ResponseEntity<>(result,HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 

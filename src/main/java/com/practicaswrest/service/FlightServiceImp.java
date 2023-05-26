@@ -1,5 +1,6 @@
 package com.practicaswrest.service;
 
+import com.practicaswrest.Dto.MostrarVueloDto;
 import com.practicaswrest.Modelo.Flight;
 import com.practicaswrest.repo.FlightReposity;
 import org.springframework.beans.BeanUtils;
@@ -20,17 +21,21 @@ public class FlightServiceImp implements IFlight{
 
 
     @Override
-    public List<Flight> listarporparams(String departureAirportCode, String arrivalAirportCode, String departureDate) {
+    public List<MostrarVueloDto> listarporparams(String departureAirportName, String arrivalAirportName, String departureDate) {
          List<Flight> vuelos = flightReposity.findAll();
-         List<Flight> vuelosxparam = new ArrayList<>();
+         List<MostrarVueloDto> vuelosxparam = new ArrayList<>();
 
          for(Flight flight: vuelos){
-             if(flight.getArrivalAirportCode().equals(arrivalAirportCode)
+             if(flight.getDepartureAirportName().equals(departureAirportName)
                      &&
-                     flight.getDepartureAirportCode().equals(departureAirportCode)
+                     flight.getArrivalAirportName().equals(arrivalAirportName)
                      &&
                      flight.getDepartureDate().equals(departureDate)){
-                        vuelosxparam.add(flight);
+                          MostrarVueloDto vueloDto = new MostrarVueloDto();
+                          BeanUtils.copyProperties(flight,vueloDto);
+                          vuelosxparam.add(vueloDto);
+
+
              }
          }
 
@@ -53,6 +58,11 @@ public class FlightServiceImp implements IFlight{
     @Override
     public void eliminar(int id) {
          flightReposity.deleteById(id);
+    }
+
+    @Override
+    public List<Flight> listarVuelos() {
+        return flightReposity.findAll();
     }
 
     @Override
