@@ -1,2 +1,2 @@
 # vuelosPWEB
-Integrantes: Luis Eduardo Garcia Paredes y Sergio Serrano
+Integrantes: Luis Eduardo Garcia Paredes
